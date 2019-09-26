@@ -1,6 +1,3 @@
-require("dotenv").config({
-  path: ".env",
-})
 const path = require("path")
 
 exports.createPages = ({ graphql, actions }) => {
