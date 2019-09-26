@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react"
 import {FirebaseContext} from "../firebase"
-import { Form, Input, Button, ErrorMessage } from "../components/common"
+import { Form, Input, Button, Message } from "../components/common"
 import { navigate } from "../../.cache/gatsby-browser-entry"
 
 const RegisterPage = () => {
@@ -34,6 +34,7 @@ const RegisterPage = () => {
     }).then(() => {
       navigate("/");
     }).catch(err => {
+      console.log(err.message);
       setErrorMessage("Rekisteröinti epäonnistui");
     });
   }
@@ -59,7 +60,7 @@ const RegisterPage = () => {
                placeholder="salasana uudelleen" required minLength={6}/>
         <Button type="submit" block>Rekisteröidy</Button>
         {errorMessage &&
-          <ErrorMessage>{errorMessage}</ErrorMessage>
+          <Message>{errorMessage}</Message>
         }
       </Form>
     </section>
