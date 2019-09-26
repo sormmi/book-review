@@ -7,9 +7,9 @@ const FormField = styled.div`
   margin-bottom: 16px;
 `
 
-let fileReader;
+let fileReader
 
-if (typeof window !== 'undefined') {
+if (typeof window !== "undefined") {
   fileReader = new FileReader()
 }
 
@@ -51,12 +51,13 @@ const AddBook = () => {
 
   const onBookChange = e => {
     e.persist()
-    setBookName(e.target.value);
+    setBookName(e.target.value)
+    setSuccess(false);
   }
 
   const onSummaryChange = e => {
     e.persist()
-    setSummary(e.target.value);
+    setSummary(e.target.value)
   }
 
   const onAuthorChange = e => {
@@ -78,13 +79,13 @@ const AddBook = () => {
         bookName,
         bookCover,
         authorId,
-        summary
+        summary,
       })
       .then(() => {
         setSuccess(true)
         setTimeout(() => {
           setSuccess(false)
-        }, 5000)
+        }, 10000)
       })
       .catch(err => console.log(err))
   }
@@ -93,10 +94,7 @@ const AddBook = () => {
     <Form onSubmit={onFormSubmit}>
       <FormField>
         <strong>Kirjan nimi</strong>
-        <Input
-          value={bookName}
-          onChange={onBookChange}
-        />
+        <Input value={bookName} onChange={onBookChange} />
       </FormField>
       <FormField>
         <strong>Kirjailija</strong>
