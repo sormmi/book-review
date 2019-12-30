@@ -2,6 +2,8 @@ import React, { useState, useContext, useEffect } from "react";
 import { Form, Input, Button, Message } from "../components/common";
 import { FirebaseContext } from "../firebase";
 import styled from "styled-components";
+import CKEditor from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
 const FormField = styled.div`
   margin-bottom: 16px;
@@ -87,7 +89,9 @@ const AddBook = () => {
           setSuccess(false);
         }, 10000);
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        console.log(err);
+      });
   };
 
   return (
@@ -109,12 +113,20 @@ const AddBook = () => {
         </div>
       </FormField>
       <FormField>
-        <strong>Kirjan kansi</strong>
+        <strong>Kirjan kansikuva</strong>
         <Input type="file" onChange={onFileChange} />
       </FormField>
       <FormField>
         <strong>Kuvaus</strong>
-        <Input type="text" value={summary} onChange={onSummaryChange} />
+
+        <CKEditor
+          editor={ClassicEditor}
+          data={summary}
+          onChange={(event, editor) => {
+            const data = editor.getData();
+            setSummary(data);
+          }}
+        />
       </FormField>
       <Button type="submit" block>
         Tallenna kirja
