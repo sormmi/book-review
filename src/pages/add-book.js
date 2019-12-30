@@ -1,9 +1,7 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useRef } from "react";
 import { Form, Input, Button, Message } from "../components/common";
 import { FirebaseContext } from "../firebase";
 import styled from "styled-components";
-import CKEditor from "@ckeditor/ckeditor5-react";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
 const FormField = styled.div`
   margin-bottom: 16px;
@@ -23,6 +21,17 @@ const AddBook = () => {
   const [bookCover, setBookCover] = useState("");
   const [authorId, setAuthorId] = useState("");
   const [success, setSuccess] = useState(false);
+  const editorRef = useRef();
+  const [editorLoaded, setEditorLoaded] = useState(false);
+  const { CKEditor, ClassicEditor } = editorRef.current || {};
+
+  useEffect(() => {
+    editorRef.current = {
+      CKEditor: require("@ckeditor/ckeditor5-react"),
+      ClassicEditor: require("@ckeditor/ckeditor5-build-classic"),
+    };
+    setEditorLoaded(true);
+  }, []);
 
   useEffect(() => {
     fileReader.addEventListener("load", () => {
@@ -118,15 +127,16 @@ const AddBook = () => {
       </FormField>
       <FormField>
         <strong>Kuvaus</strong>
-
-        <CKEditor
-          editor={ClassicEditor}
-          data={summary}
-          onChange={(event, editor) => {
-            const data = editor.getData();
-            setSummary(data);
-          }}
-        />
+        {editorLoaded && (
+          <CKEditor
+            editor={ClassicEditor}
+            data={summary}
+            onChange={(event, editor) => {
+              const data = editor.getData();
+              setSummary(data);
+            }}
+          />
+        )}
       </FormField>
       <Button type="submit" block>
         Tallenna kirja
