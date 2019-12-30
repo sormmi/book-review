@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react"
-import styled from "styled-components"
-import { Button, Input } from "../common"
-import moment from "moment"
-import StarRatingComponent from "react-star-rating-component"
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import { Button, Input } from "../common";
+import moment from "moment";
+import StarRatingComponent from "react-star-rating-component";
 
 const CommentForm = styled.form`
   display: flex;
@@ -23,14 +23,14 @@ const CommentForm = styled.form`
   ${Button} {
     margin: auto 0;
   }
-`
+`;
 
 const CommentListItem = styled.div`
   border-bottom: 1px solid #ddd;
   padding: 3px 0;
   font-size: 0.85em;
   margin-bottom: 3px;
-`
+`;
 
 const CommentListHeader = styled.div`
   display: grid;
@@ -41,34 +41,37 @@ const CommentListHeader = styled.div`
     font-size: 0.9em;
     color: #999;
   }
-`
+`;
 
 const BookComments = ({ firebase, bookId }) => {
-  const [comments, setComments] = useState([])
-  const [commentText, setCommentText] = useState("")
-  const [rating, setRating] = useState(0)
+  const [comments, setComments] = useState([]);
+  const [commentText, setCommentText] = useState("");
+  const [rating, setRating] = useState(0);
 
   useEffect(() => {
-    const unsubscribe = firebase.subscribeBookComments({
-      bookId,
-      onSnapshot: comments => {
-        const snapshotComments = []
-        comments.forEach(doc => {
-          snapshotComments.push({
-            id: doc.id,
-            ...doc.data(),
-          })
-        })
-        setComments(snapshotComments)
+    const unsubscribe = firebase.subscribeBookComments(
+      {
+        bookId,
+        onSnapshot: comments => {
+          const snapshotComments = [];
+          comments.forEach(doc => {
+            snapshotComments.push({
+              id: doc.id,
+              ...doc.data(),
+            });
+          });
+          setComments(snapshotComments);
+        },
       },
-    }, [firebase, bookId])
+      [firebase, bookId]
+    );
 
     return () => {
       if (unsubscribe) {
-        unsubscribe()
+        unsubscribe();
       }
-    }
-  }, [])
+    };
+  }, []);
 
   /**
    * Post comment handler
@@ -76,17 +79,17 @@ const BookComments = ({ firebase, bookId }) => {
    * @returns {Promise<void>}
    */
   const handlePostCommentSubmit = async e => {
-    e.preventDefault()
+    e.preventDefault();
 
     await firebase.postComment({
       text: commentText,
       rating: rating,
       bookId,
-    })
+    });
 
-    setRating(0)
-    setCommentText("")
-  }
+    setRating(0);
+    setCommentText("");
+  };
 
   /**
    * Star click handler
@@ -94,18 +97,18 @@ const BookComments = ({ firebase, bookId }) => {
    * @param prevVal
    */
   const onStarClick = (nextVal, prevVal) => {
-    let rating = nextVal === 1 && prevVal === 1 ? 0 : nextVal
-    setRating(rating)
-  }
+    let rating = nextVal === 1 && prevVal === 1 ? 0 : nextVal;
+    setRating(rating);
+  };
 
   /**
    * Handle comment input field changes
    * @param e
    */
   const onCommentChange = e => {
-    e.persist()
-    setCommentText(e.target.value)
-  }
+    e.persist();
+    setCommentText(e.target.value);
+  };
 
   return (
     <>
@@ -136,7 +139,7 @@ const BookComments = ({ firebase, bookId }) => {
         </CommentListItem>
       ))}
     </>
-  )
-}
+  );
+};
 
-export default BookComments
+export default BookComments;

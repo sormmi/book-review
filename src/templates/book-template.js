@@ -1,12 +1,11 @@
-import React, { useContext } from "react"
-import { graphql } from "gatsby"
-import BookItem from "../components/book-item"
-import BookComments from "../components/book/BookComments"
-import { FirebaseContext } from "../firebase"
+import React, { useContext } from "react";
+import { graphql } from "gatsby";
+import BookItem from "../components/book-item";
+import BookComments from "../components/book/BookComments";
+import { FirebaseContext } from "../firebase";
 
-const BookTemplate = ({data}) => {
-
-  const {firebase} = useContext(FirebaseContext);
+const BookTemplate = ({ data }) => {
+  const { firebase } = useContext(FirebaseContext);
 
   return (
     <section>
@@ -16,12 +15,10 @@ const BookTemplate = ({data}) => {
         summary={data.book.summary}
         bookCover={data.book.localImage.childImageSharp.fixed}
       />
-      {firebase &&
-        <BookComments firebase={firebase} bookId={data.book.id}/>
-      }
+      {firebase && <BookComments firebase={firebase} bookId={data.book.id} />}
     </section>
-  )
-}
+  );
+};
 
 export const query = graphql`
   query BookQuery($bookId: String!) {
@@ -35,7 +32,7 @@ export const query = graphql`
       localImage {
         childImageSharp {
           fixed(width: 200) {
-          ...GatsbyImageSharpFixed
+            ...GatsbyImageSharpFixed
           }
         }
       }
@@ -44,4 +41,3 @@ export const query = graphql`
 `;
 
 export default BookTemplate;
-

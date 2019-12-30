@@ -1,19 +1,19 @@
-import { useEffect, useState } from "react"
-import getFirebaseInstance from "./firebase"
-import loadFirebaseDependencies from "./loadFirebaseDependencies"
+import { useEffect, useState } from "react";
+import getFirebaseInstance from "./firebase";
+import loadFirebaseDependencies from "./loadFirebaseDependencies";
 
 const useAuth = () => {
-  const [user, setUser] = useState(null)
-  const [firebase, setFirebase] = useState(null)
-  const [loading, setLoading] = useState(true)
+  const [user, setUser] = useState(null);
+  const [firebase, setFirebase] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    let unsubscribe
-    let userProfileUnsubscribe
+    let unsubscribe;
+    let userProfileUnsubscribe;
 
     loadFirebaseDependencies.then(app => {
-      const firebaseInstance = getFirebaseInstance(app)
-      setFirebase(firebaseInstance)
+      const firebaseInstance = getFirebaseInstance(app);
+      setFirebase(firebaseInstance);
 
       unsubscribe = firebaseInstance.auth.onAuthStateChanged(userResult => {
         if (userResult) {
@@ -27,28 +27,28 @@ const useAuth = () => {
                     ...userResult,
                     isAdmin: token.claims.admin,
                     username: r.empty ? null : r.docs[0].id,
-                  })
-                })
+                  });
+                });
             },
-          })
+          });
         } else {
-          setUser(null)
+          setUser(null);
         }
-        setLoading(false)
-      })
-    })
+        setLoading(false);
+      });
+    });
 
     return () => {
       if (unsubscribe) {
-        unsubscribe()
+        unsubscribe();
       }
       if (userProfileUnsubscribe) {
-        userProfileUnsubscribe()
+        userProfileUnsubscribe();
       }
-    }
-  }, [])
+    };
+  }, []);
 
-  return { user, firebase, loading }
-}
+  return { user, firebase, loading };
+};
 
-export default useAuth
+export default useAuth;

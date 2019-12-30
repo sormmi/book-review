@@ -1,78 +1,78 @@
-import React, { useState, useContext, useEffect } from "react"
-import { Form, Input, Button, Message } from "../components/common"
-import { FirebaseContext } from "../firebase"
-import styled from "styled-components"
+import React, { useState, useContext, useEffect } from "react";
+import { Form, Input, Button, Message } from "../components/common";
+import { FirebaseContext } from "../firebase";
+import styled from "styled-components";
 
 const FormField = styled.div`
   margin-bottom: 16px;
-`
+`;
 
-let fileReader
+let fileReader;
 
 if (typeof window !== "undefined") {
-  fileReader = new FileReader()
+  fileReader = new FileReader();
 }
 
 const AddBook = () => {
-  const { firebase } = useContext(FirebaseContext)
-  const [authors, setAuthors] = useState([])
-  const [bookName, setBookName] = useState("")
-  const [summary, setSummary] = useState("")
-  const [bookCover, setBookCover] = useState("")
-  const [authorId, setAuthorId] = useState("")
-  const [success, setSuccess] = useState(false)
+  const { firebase } = useContext(FirebaseContext);
+  const [authors, setAuthors] = useState([]);
+  const [bookName, setBookName] = useState("");
+  const [summary, setSummary] = useState("");
+  const [bookCover, setBookCover] = useState("");
+  const [authorId, setAuthorId] = useState("");
+  const [success, setSuccess] = useState(false);
 
   useEffect(() => {
     fileReader.addEventListener("load", () => {
-      setBookCover(fileReader.result)
-    })
-  }, [])
+      setBookCover(fileReader.result);
+    });
+  }, []);
 
   useEffect(() => {
     if (firebase) {
       firebase
         .getAllAuthors()
         .then(authors => {
-          const availableAuthors = []
+          const availableAuthors = [];
 
           authors.forEach(doc => {
             availableAuthors.push({
               id: doc.id,
               ...doc.data(),
-            })
-          })
+            });
+          });
 
-          setAuthorId(availableAuthors[0].id)
-          setAuthors(availableAuthors)
+          setAuthorId(availableAuthors[0].id);
+          setAuthors(availableAuthors);
         })
-        .catch(err => console.log(err))
+        .catch(err => console.log(err));
     }
-  }, [firebase])
+  }, [firebase]);
 
   const onBookChange = e => {
-    e.persist()
-    setBookName(e.target.value)
+    e.persist();
+    setBookName(e.target.value);
     setSuccess(false);
-  }
+  };
 
   const onSummaryChange = e => {
-    e.persist()
-    setSummary(e.target.value)
-  }
+    e.persist();
+    setSummary(e.target.value);
+  };
 
   const onAuthorChange = e => {
-    e.persist()
-    setAuthorId(e.target.value)
-  }
+    e.persist();
+    setAuthorId(e.target.value);
+  };
 
   const onFileChange = e => {
-    e.persist()
-    fileReader.readAsDataURL(e.target.files[0])
-  }
+    e.persist();
+    fileReader.readAsDataURL(e.target.files[0]);
+  };
 
   const onFormSubmit = e => {
-    e.preventDefault()
-    setSuccess(false)
+    e.preventDefault();
+    setSuccess(false);
 
     firebase
       .createBook({
@@ -82,13 +82,13 @@ const AddBook = () => {
         summary,
       })
       .then(() => {
-        setSuccess(true)
+        setSuccess(true);
         setTimeout(() => {
-          setSuccess(false)
-        }, 10000)
+          setSuccess(false);
+        }, 10000);
       })
-      .catch(err => console.log(err))
-  }
+      .catch(err => console.log(err));
+  };
 
   return (
     <Form onSubmit={onFormSubmit}>
@@ -121,7 +121,7 @@ const AddBook = () => {
       </Button>
       {success && <Message success>Kirjan tallennus onnistui</Message>}
     </Form>
-  )
-}
+  );
+};
 
-export default AddBook
+export default AddBook;
