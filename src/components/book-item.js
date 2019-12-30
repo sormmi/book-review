@@ -41,7 +41,11 @@ const BookItem = ({ authorName, title, summary, bookCover, children }) => {
         <h2>
           {title} <small>{authorName}</small>
         </h2>
-        <div dangerouslySetInnerHTML={{ __html: summary }}></div>
+        <div
+          dangerouslySetInnerHTML={{
+            __html: summary,
+          }}
+        ></div>
         <div>{children}</div>
       </BookItemContentWrapper>
     </BookItemStyled>

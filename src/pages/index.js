@@ -12,7 +12,11 @@ const IndexPage = props => {
           key={node.id}
           authorName={node.author.name}
           title={node.title}
-          summary={node.summary}
+          summary={
+            node.summary.length < 300
+              ? node.summary
+              : node.summary.substr(0, node.summary.indexOf(" ", 300)) + "..."
+          }
           bookCover={node.localImage.childImageSharp.fixed}
         >
           <LinkButton to={`/book/${node.id}`}> Arvostelut </LinkButton>

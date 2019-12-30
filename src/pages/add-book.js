@@ -66,11 +66,6 @@ const AddBook = () => {
     setSuccess(false);
   };
 
-  const onSummaryChange = e => {
-    e.persist();
-    setSummary(e.target.value);
-  };
-
   const onAuthorChange = e => {
     e.persist();
     setAuthorId(e.target.value);
