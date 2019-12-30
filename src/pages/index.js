@@ -1,47 +1,49 @@
-import React from "react"
-import { graphql } from "gatsby"
+import React from "react";
+import { graphql } from "gatsby";
 
-import BookItem from "../components/book-item"
-import { LinkButton } from "../components/common"
+import BookItem from "../components/book-item";
+import { LinkButton } from "../components/common";
 
-const IndexPage = (props) => {
+const IndexPage = props => {
   return (
     <section>
-      { props.data.allBook.edges.map(({node}) => (
-        <BookItem key={node.id}
-                  authorName={node.author.name}
-                  title={node.title}
-                  summary={node.summary}
-                  bookCover={node.localImage.childImageSharp.fixed}>
+      {props.data.allBook.edges.map(({ node }) => (
+        <BookItem
+          key={node.id}
+          authorName={node.author.name}
+          title={node.title}
+          summary={node.summary}
+          bookCover={node.localImage.childImageSharp.fixed}
+        >
           <LinkButton to={`/book/${node.id}`}> Arvostelut </LinkButton>
         </BookItem>
       ))}
     </section>
   );
-}
+};
 
 export const query = graphql`
-{
-  allBook {
-    edges {
-      node {
-        title
-        summary
-        id
-        localImage {
-          childImageSharp {
-            fixed(width: 200) {
-              ...GatsbyImageSharpFixed
+  {
+    allBook {
+      edges {
+        node {
+          title
+          summary
+          id
+          localImage {
+            childImageSharp {
+              fixed(width: 200) {
+                ...GatsbyImageSharpFixed
+              }
             }
           }
-        }
-        author {
-          name
+          author {
+            name
+          }
         }
       }
     }
   }
-}
-`
+`;
 
-export default IndexPage
+export default IndexPage;

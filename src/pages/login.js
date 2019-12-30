@@ -1,45 +1,45 @@
-import React, { useContext, useEffect, useState } from "react"
-import { FirebaseContext } from "../firebase"
-import { Form, Input, Button, Message } from "../components/common"
-import { navigate } from "../../.cache/gatsby-browser-entry"
+import React, { useContext, useEffect, useState } from "react";
+import { FirebaseContext } from "../firebase";
+import { Form, Input, Button, Message } from "../components/common";
+import { navigate } from "../../.cache/gatsby-browser-entry";
 
 const LoginPage = () => {
-  const [formValues, setFormValues] = useState({ email: "", password: "" })
-  const [errorMessage, setErrorMessage] = useState("")
-  const { firebase } = useContext(FirebaseContext)
+  const [formValues, setFormValues] = useState({ email: "", password: "" });
+  const [errorMessage, setErrorMessage] = useState("");
+  const { firebase } = useContext(FirebaseContext);
 
-  let isMounted = true
+  let isMounted = true;
 
   useEffect(() => {
     return () => {
-      isMounted = false
-    }
-  }, [])
+      isMounted = false;
+    };
+  }, []);
 
   const onFormSubmit = async e => {
-    e.preventDefault()
+    e.preventDefault();
 
     try {
       await firebase.login({
         email: formValues.email,
         password: formValues.password,
-      })
-      navigate("/")
+      });
+      navigate("/");
     } catch (error) {
       if (isMounted) {
-        setErrorMessage("Käyttäjätunnus tai salasana virheellinen")
+        setErrorMessage("Käyttäjätunnus tai salasana virheellinen");
       }
     }
-  }
+  };
 
   const handleInputChange = e => {
-    e.persist()
+    e.persist();
     setFormValues(currentValues => ({
       ...currentValues,
       [e.target.name]: e.target.value,
-    }))
-    setErrorMessage("")
-  }
+    }));
+    setErrorMessage("");
+  };
 
   return (
     <section>
@@ -64,7 +64,7 @@ const LoginPage = () => {
         {errorMessage && <Message>{errorMessage}</Message>}
       </Form>
     </section>
-  )
-}
+  );
+};
 
-export default LoginPage
+export default LoginPage;
