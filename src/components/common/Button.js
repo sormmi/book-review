@@ -1,4 +1,4 @@
-import styled from "styled-components"
+import styled from "styled-components";
 
 export const Button = styled.button`
   background: rebeccapurple;
@@ -7,14 +7,14 @@ export const Button = styled.button`
   cursor: pointer;
   border-radius: 4px;
   white-space: nowrap;
-  
-  ${props => props.block ? 'display: block; width: 100%;' : ''}
-  
+
+  ${props => (props.block ? "display: block; width: 100%;" : "")}
+
   &:hover {
     background: indigo;
   }
-  
+
   &:focus {
-    outline:0;
+    outline: 0;
   }
 `;
