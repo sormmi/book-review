@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Button, Input } from "../common";
+import { Button, Input, Spinner } from "../common";
 import moment from "moment";
 import StarRatingComponent from "react-star-rating-component";
 
@@ -47,6 +47,7 @@ const BookComments = ({ firebase, bookId }) => {
   const [comments, setComments] = useState([]);
   const [commentText, setCommentText] = useState("");
   const [rating, setRating] = useState(0);
+  const [isSaving, setSaving] = useState(false);
 
   useEffect(() => {
     const unsubscribe = firebase.subscribeBookComments(
@@ -81,6 +82,8 @@ const BookComments = ({ firebase, bookId }) => {
   const handlePostCommentSubmit = async e => {
     e.preventDefault();
 
+    setSaving(true);
+
     await firebase.postComment({
       text: commentText,
       rating: rating,
@@ -89,6 +92,7 @@ const BookComments = ({ firebase, bookId }) => {
 
     setRating(0);
     setCommentText("");
+    setSaving(false);
   };
 
   /**
@@ -121,6 +125,8 @@ const BookComments = ({ firebase, bookId }) => {
         />
         <Button type="submit">Arvostele</Button>
       </CommentForm>
+
+      {isSaving && <Spinner />}
 
       {comments.map(c => (
         <CommentListItem key={c.id}>

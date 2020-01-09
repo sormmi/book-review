@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
-import { Form, Input, Button, Message } from "../components/common";
+import { Form, Input, Button, Message, Spinner } from "../components/common";
 import { FirebaseContext } from "../firebase";
 import styled from "styled-components";
 
@@ -98,6 +98,8 @@ const AddBook = () => {
       });
   };
 
+  if (!editorLoaded || authors.length === 0) return <Spinner />;
+
   return (
     <Form onSubmit={onFormSubmit}>
       <FormField>
@@ -122,16 +124,14 @@ const AddBook = () => {
       </FormField>
       <FormField>
         <strong>Kuvaus</strong>
-        {editorLoaded && (
-          <CKEditor
-            editor={ClassicEditor}
-            data={summary}
-            onChange={(event, editor) => {
-              const data = editor.getData();
-              setSummary(data);
-            }}
-          />
-        )}
+        <CKEditor
+          editor={ClassicEditor}
+          data={summary}
+          onChange={(event, editor) => {
+            const data = editor.getData();
+            setSummary(data);
+          }}
+        />
       </FormField>
       <Button type="submit" block>
         Tallenna kirja
